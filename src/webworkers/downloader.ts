@@ -1,6 +1,7 @@
 import * as Comlink from "comlink";
 import fs from "fs";
 import fsPromises from "fs/promises";
+import type { FileHandle } from "fs/promises";
 import { encodeUrlHeaders } from "@/common/normalize-util";
 import { DownloadState } from "@/common/constant";
 import { rimraf } from "rimraf";
@@ -126,7 +127,7 @@ async function downloadFile(
 
             const controller = new AbortController();
             task.controller = controller;
-            let handle: fsPromises.FileHandle | undefined;
+            let handle: FileHandle | undefined;
             let streamCompleted = false;
 
             try {
