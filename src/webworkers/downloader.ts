@@ -127,6 +127,7 @@ async function downloadFile(
             const controller = new AbortController();
             task.controller = controller;
             let handle: fsPromises.FileHandle | undefined;
+            let streamCompleted = false;
 
             try {
                 const res = await fetchSource(mediaSource, headers, controller);
@@ -154,7 +155,10 @@ async function downloadFile(
                 while (!task.paused && !task.cancelled) {
                     const readStarted = Date.now();
                     const result = await reader.read();
-                    if (result.done) break;
+                    if (result.done) {
+                        streamCompleted = true;
+                        break;
+                    }
 
                     const chunk = Buffer.from(result.value);
                     await handle.write(chunk);
@@ -185,6 +189,8 @@ async function downloadFile(
                 await handle?.close();
                 task.controller = undefined;
             }
+
+            if (streamCompleted && !task.paused && !task.cancelled) break;
         }
 
         if (task.cancelled) {
