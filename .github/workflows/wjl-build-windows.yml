@@ -1,0 +1,39 @@
+name: WJL Windows Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: TypeScript check
+        run: npx tsc --noEmit
+      - name: Package Windows app
+        run: npm run package
+      - name: Archive portable build
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          $source = Get-ChildItem -Directory ./out | Where-Object { $_.Name -like "MusicFree*win32-x64*" } | Select-Object -First 1
+          if (-not $source) { throw "Windows package directory not found under ./out" }
+          Compress-Archive -Path "$($source.FullName)/*" -DestinationPath "./out/MusicFreeDesktop-WJL-$version-win32-x64-portable.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MusicFreeDesktop-WJL-Windows
+          path: ./out/MusicFreeDesktop-WJL-*-win32-x64-portable.zip
+          retention-days: 30
