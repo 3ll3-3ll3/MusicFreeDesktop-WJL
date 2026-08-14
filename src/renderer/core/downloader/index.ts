@@ -278,7 +278,9 @@ function useDownloadStatus(musicItem: IMusic.IMusicItem) {
             if (isSameMedia(mi, musicItem)) setDownloadStatus(stateData);
         };
         ee.on(DownloadEvts.DownloadStatusUpdated, updateFn);
-        return () => ee.off(DownloadEvts.DownloadStatusUpdated, updateFn);
+        return () => {
+            ee.off(DownloadEvts.DownloadStatusUpdated, updateFn);
+        };
     }, [musicItem]);
 
     return downloadStatus;
