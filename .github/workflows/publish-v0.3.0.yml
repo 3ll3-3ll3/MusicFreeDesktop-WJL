@@ -1,0 +1,40 @@
+name: Publish v0.3.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0.3.0.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BUILD_RUN_ID: "31769754654"
+      RELEASE_TAG: "v0.3.0"
+      RELEASE_TARGET: "71aa7fa7036894650b6a36253d1b42376f8ef433"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download validated Windows artifact
+        run: |
+          mkdir -p release-assets
+          gh run download "$BUILD_RUN_ID" -n MusicFreeDesktop-WJL-Windows -D release-assets
+          ls -lah release-assets
+      - name: Publish GitHub Release
+        run: |
+          ASSET="release-assets/MusicFreeDesktop-WJL-0.3.0-win32-x64-portable.zip"
+          test -f "$ASSET"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$ASSET" --clobber
+          else
+            gh release create "$RELEASE_TAG" "$ASSET" \
+              --target "$RELEASE_TARGET" \
+              --title "MusicFreeDesktop-WJL v0.3.0" \
+              --notes "WJL DIY 版首个可测试构建。\n\n主要功能：\n- 每次下载选择 low / standard / high / super 四档音质\n- 客户端全局时长过滤\n- 插件 extension 扩展名提示兼容\n- 下载暂停 / 继续 / 取消 / 失败重试\n- HTTP Range 断点续传；源不支持 Range 时安全从头重下\n- 下载速度限制\n\n构建验证：npm ci、TypeScript、Electron Windows package 全部通过。\n\n注意：暂停任务当前仅在本次应用会话内保留，退出应用后不会自动恢复队列。"
+          fi
