@@ -21,6 +21,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Configure node-gyp Python
+        shell: pwsh
+        run: |
+          $python = (Get-Command python).Source
+          echo "PYTHON=$python" >> $env:GITHUB_ENV
+          echo "npm_config_python=$python" >> $env:GITHUB_ENV
+          python --version
       - name: Install dependencies
         run: npm ci
       - name: TypeScript check
