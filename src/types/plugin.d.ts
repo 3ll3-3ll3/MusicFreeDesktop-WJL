@@ -7,6 +7,8 @@ declare namespace IPlugin {
     userAgent?: string;
     /** 音质 */
     quality?: IMusic.IQualityKey;
+    /** 下载文件扩展名提示（不含点），避免 CDN URL 后缀误判 */
+    extension?: string;
   }
 
   export interface ISearchResult<T extends IMedia.SupportMediaType> {

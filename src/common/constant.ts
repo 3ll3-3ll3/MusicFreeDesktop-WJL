@@ -122,8 +122,12 @@ export enum DownloadState {
     WAITING = "WAITING",
     /** 下载中 */
     DOWNLOADING = "DOWNLOADING",
+    /** 已暂停，可继续 */
+    PAUSED = "PAUSED",
     /** 失败 */
     ERROR = "ERROR",
+    /** 已取消 */
+    CANCELLED = "CANCELLED",
     /** 下载完成 */
     DONE = "DONE",
 }

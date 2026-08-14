@@ -68,6 +68,10 @@ interface _IAppConfig {
     "download.whenQualityMissing": "higher" | "lower";
     /** 最多同时下载 */
     "download.concurrency": number;
+    /** 最大允许下载时长（分钟），0 = 不限制 */
+    "download.maxDurationMinutes": number;
+    /** 全局下载速度限制（KB/s），0 = 不限速 */
+    "download.speedLimitKbps": number;
 
     /** 是否自动升级插件 */
     "plugin.autoUpdatePlugin": boolean;

@@ -220,9 +220,12 @@ export function showMusicContextMenu(
                     (item) => isLocalMusic(item) || Downloader.isDownloaded(item),
                 )
                 : !isLocalMusic(musicItems) && !Downloader.isDownloaded(musicItems),
-            onClick() {
-                Downloader.startDownload(musicItems);
-            },
+            subMenu: [
+                { title: "省流（low）", onClick() { Downloader.startDownload(musicItems, "low"); } },
+                { title: "标准（standard）", onClick() { Downloader.startDownload(musicItems, "standard"); } },
+                { title: "高音质（high）", onClick() { Downloader.startDownload(musicItems, "high"); } },
+                { title: "最高 / 无损优先（super）", onClick() { Downloader.startDownload(musicItems, "super"); } },
+            ],
         },
         {
             title: i18n.t("music_list_context_menu.delete_local_download"),

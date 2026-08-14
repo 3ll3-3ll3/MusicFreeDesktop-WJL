@@ -11,32 +11,38 @@ interface IProps {
 
 function DownloadStatus(props: IProps) {
     const { musicItem } = props;
-
     const { t } = useTranslation();
-
     const downloadStatus = Downloader.useDownloadStatus(musicItem);
-    if (!downloadStatus) {
-        return <span>-</span>;
-    } else if (downloadStatus.state === DownloadState.WAITING) {
+
+    if (!downloadStatus) return <span>-</span>;
+    if (downloadStatus.state === DownloadState.WAITING) {
         return <span>{t("download_page.waiting")}</span>;
-    } else if (downloadStatus.state === DownloadState.ERROR) {
+    }
+    if (downloadStatus.state === DownloadState.PAUSED) {
+        return (
+            <span>
+                已暂停 · {normalizeFileSize(downloadStatus.downloaded ?? 0)} /{" "}
+                {normalizeFileSize(downloadStatus.total ?? 0)}
+            </span>
+        );
+    }
+    if (downloadStatus.state === DownloadState.ERROR) {
         return (
             <span style={{ color: "var(--dangerColor, #FC5F5F)" }}>
                 {t("download_page.failed")}: {downloadStatus.msg}
             </span>
         );
-    } else if (downloadStatus.state === DownloadState.DOWNLOADING) {
+    }
+    if (downloadStatus.state === DownloadState.CANCELLED) return <span>已取消</span>;
+    if (downloadStatus.state === DownloadState.DOWNLOADING) {
         return (
-            <span
-                style={{
-                    color: "var(--infoColor, #0A95C8)",
-                }}
-            >
+            <span style={{ color: "var(--infoColor, #0A95C8)" }}>
                 {normalizeFileSize(downloadStatus.downloaded ?? 0)} /{" "}
                 {normalizeFileSize(downloadStatus.total ?? 0)}
             </span>
         );
     }
+    return <span>-</span>;
 }
 
 export default React.memo(DownloadStatus, (prev, curr) =>

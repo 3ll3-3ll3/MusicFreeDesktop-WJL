@@ -1,15 +1,14 @@
 import "./index.scss";
 import RadioGroupSettingItem from "../../components/RadioGroupSettingItem";
 import ListBoxSettingItem from "../../components/ListBoxSettingItem";
+import InputSettingItem from "../../components/InputSettingItem";
 import Downloader from "@/renderer/core/downloader";
 import PathSettingItem from "../../components/PathSettingItem";
 import { useTranslation } from "react-i18next";
 
-
 const concurrencyList = Array(20)
     .fill(0)
     .map((_, index) => index + 1);
-
 
 export default function Download() {
     const { t } = useTranslation();
@@ -28,26 +27,34 @@ export default function Download() {
                 }}
                 label={t("settings.download.max_concurrency")}
             ></ListBoxSettingItem>
+            <InputSettingItem
+                keyPath="download.maxDurationMinutes"
+                type="number"
+                width={360}
+                label="最大歌曲时长（分钟，0 = 不限制）"
+            ></InputSettingItem>
+            <InputSettingItem
+                keyPath="download.speedLimitKbps"
+                type="number"
+                width={360}
+                label="全局下载限速（KB/s，0 = 不限速）"
+                onChange={(_evt, value) => {
+                    Downloader.setGlobalSpeedLimit(Number(value) || 0);
+                }}
+            ></InputSettingItem>
             <RadioGroupSettingItem
                 label={t("settings.download.default_download_quality")}
                 keyPath="download.defaultQuality"
-                options={[
-                    "low",
-                    "standard",
-                    "high",
-                    "super",
-                ]}
+                options={["low", "standard", "high", "super"]}
                 renderItem={(item) => t("media.music_quality_" + item)}
             ></RadioGroupSettingItem>
             <RadioGroupSettingItem
                 label={t("settings.download.when_quality_missing")}
                 keyPath="download.whenQualityMissing"
-                options={[
-                    "lower",
-                    "higher",
-                ]}
-                renderItem={(item) => t("settings.download.download_" + item + "_quality_version")}
-
+                options={["lower", "higher"]}
+                renderItem={(item) =>
+                    t("settings.download.download_" + item + "_quality_version")
+                }
             ></RadioGroupSettingItem>
         </div>
     );

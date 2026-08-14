@@ -25,6 +25,8 @@ const _defaultAppConfig: IAppConfig =  {
     "shortCut.enableLocal": true,
     "shortCut.enableGlobal": false,
     "download.concurrency": 5,
+    "download.maxDurationMinutes": 0,
+    "download.speedLimitKbps": 0,
     "normal.musicListColumnsShown": [],
     "backup.resumeBehavior": "append",
     "normal.language": "zh-CN",

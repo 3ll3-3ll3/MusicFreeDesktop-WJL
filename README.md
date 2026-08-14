@@ -1,3 +1,10 @@
+# MusicFreeDesktop-WJL v0.3.0
+
+> 基于 `maotoumao/MusicFreeDesktop` 的个人增强版。当前重点：每次下载选四档音质、全局时长过滤、Cotton/格式扩展名提示、下载暂停/恢复/取消/重试与速度限制。
+> 上游基线：`f3b526a6c1ea9313b277810a8e12003605a98982`。详细改动见 [`WJL_CHANGELOG.md`](./WJL_CHANGELOG.md)。
+
+---
+
 # MusicFree 桌面版
 ![GitHub Repo stars](https://img.shields.io/github/stars/maotoumao/MusicFreeDesktop) 
 ![GitHub forks](https://img.shields.io/github/forks/maotoumao/MusicFreeDesktop)

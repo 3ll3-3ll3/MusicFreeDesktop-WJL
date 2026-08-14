@@ -1,8 +1,8 @@
 {
   "name": "musicfree-desktop",
-  "productName": "MusicFree",
-  "version": "0.0.8",
-  "description": "一个插件化的音乐播放器",
+  "productName": "MusicFree WJL",
+  "version": "0.3.0",
+  "description": "MusicFreeDesktop WJL enhanced build with advanced download management",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

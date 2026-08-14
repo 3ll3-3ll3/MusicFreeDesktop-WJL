@@ -10,6 +10,7 @@ import "./index.scss";
 import { i18n } from "@/shared/i18n/renderer";
 import useVirtualList from "@/hooks/useVirtualList";
 import DownloadStatus from "./DownloadStatus";
+import DownloadActions from "./DownloadActions";
 
 const columnHelper = createColumnHelper<IMusic.IMusicItem>();
 
@@ -48,6 +49,12 @@ const columnDef = [
         cell: (info) => {
             return <DownloadStatus musicItem={info.row.original}></DownloadStatus>;
         },
+    }),
+    columnHelper.display({
+        header: () => "任务控制",
+        size: 160,
+        id: "actions",
+        cell: (info) => <DownloadActions musicItem={info.row.original}></DownloadActions>,
     }),
     columnHelper.accessor("platform", {
         header: () => t("media.media_platform"),
